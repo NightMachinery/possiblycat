@@ -3,63 +3,60 @@
 A helper tool to optionally get the stdin if present.
 
 * Installation
-#+BEGIN_SRC
+#+BEGIN_example
 go get -u -v github.com/NightMachinary/possiblycat
-#+END_SRC
+#+END_example
 * Usage
-** No input on stdin
 #+begin_src bsh.dash :results verbatim :exports both
 possiblycat ; echo exited $?
 #+end_src
 
 #+RESULTS:
-: exited 1
+: exited 0
 
 #+begin_src bsh.dash :results verbatim :exports both
 time possiblycat
 #+end_src
 
 #+RESULTS:
-: possiblycat  0.00s user 0.00s system 16% cpu 0.024 total; max RSS 1852
+: possiblycat  0.00s user 0.00s system 66% cpu 0.005 total; max RSS 1852
 
-You can also give it the timeout time in milliseconds:
-
-#+begin_src bsh.dash :results verbatim :exports both
-time possiblycat 500
-#+end_src
-
-#+RESULTS:
-: possiblycat 500  0.00s user 0.00s system 1% cpu 0.512 total; max RSS 1856
-
-#+begin_src bsh.dash :results verbatim :exports both
-true | time possiblycat 300 ; echo exited $?
-#+end_src
-
-#+RESULTS:
-: exited 1
-: possiblycat 300  0.00s user 0.00s system 1% cpu 0.311 total; max RSS 1848
-
-** Input present
 #+begin_src bsh.dash :results verbatim :exports both
 { xxd -l 100 -p /dev/urandom ; ec --- ; ec ok } | possiblycat ; echo exited $?
 #+end_src
 
 #+RESULTS:
-: a5368f8cb73031bcb518371c55c998a0f308ae32d2b7606ed883696989a5
-: 77632c8a40f0264c33cb137f6149df7c03aeb4c3271539525960c4ebc3b4
-: 85dcd33879ca35e4744276cd01fbf55f4efb59e19791c9032f421a10e1f2
-: 76f9cc8632a8cd4771df
+: af61692667c76c5cc5235b632b43385988f473f6e4eab330a3bdf56af0c5
+: 9e3d48f49cde4be7cabb7694fea8417440b59f07142e9a7a4b32680955fe
+: 5c054a2ad97ec9833083647f99e8f14f223881e9d1d374c5a3f17b3d4b9e
+: 0c11a163029f2ef87601
 : ---
 : ok
 : exited 0
 
-#+begin_src bsh.dash :results verbatim :exports both :wrap example
-echo | time possiblycat 1000 ; echo exited $?
+You can also give it the timeout duration in milliseconds:
+
+#+begin_src bsh.dash :results verbatim :exports both
+true | time possiblycat 500 ; echo exited $?
 #+end_src
 
 #+RESULTS:
-#+begin_example
+: exited 0
+: possiblycat 500  0.00s user 0.00s system 69% cpu 0.004 total; max RSS 1856
 
-exited 0
-possiblycat 1000  0.00s user 0.00s system 67% cpu 0.007 total; max RSS 1864
-#+end_example
+#+begin_src bsh.dash :results verbatim :exports both
+{ sleep 1 ; echo hi } | time possiblycat 500 ; echo exited $?
+#+end_src
+
+#+RESULTS:
+: exited 1
+: possiblycat 500  0.00s user 0.00s system 0% cpu 0.508 total; max RSS 1868
+
+#+begin_src bsh.dash :results verbatim :exports both
+{ sleep 1 ; echo hi } | time possiblycat 1500 ; echo exited $?
+#+end_src
+
+#+RESULTS:
+: hi
+: exited 0
+: possiblycat 1500  0.00s user 0.00s system 0% cpu 1.005 total; max RSS 1872
