@@ -39,6 +39,7 @@ func main() {
 			panic(err2)
 		}
 	case <-time.After(time.Duration(wait) * time.Millisecond):
+		os.Exit(1)
 	}
 }
 

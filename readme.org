@@ -9,17 +9,18 @@ go get -u -v github.com/NightMachinary/possiblycat
 * Usage
 ** No input on stdin
 #+begin_src bsh.dash :results verbatim :exports both
-possiblycat
+possiblycat ; echo exited $?
 #+end_src
 
 #+RESULTS:
+: exited 1
 
 #+begin_src bsh.dash :results verbatim :exports both
 time possiblycat
 #+end_src
 
 #+RESULTS:
-: possiblycat  0.00s user 0.00s system 28% cpu 0.020 total; max RSS 1868
+: possiblycat  0.00s user 0.00s system 16% cpu 0.024 total; max RSS 1852
 
 You can also give it the timeout time in milliseconds:
 
@@ -28,34 +29,37 @@ time possiblycat 500
 #+end_src
 
 #+RESULTS:
-: possiblycat 500  0.00s user 0.00s system 0% cpu 0.511 total; max RSS 1868
+: possiblycat 500  0.00s user 0.00s system 1% cpu 0.512 total; max RSS 1856
 
 #+begin_src bsh.dash :results verbatim :exports both
-true | time possiblycat 300
+true | time possiblycat 300 ; echo exited $?
 #+end_src
 
 #+RESULTS:
-: possiblycat 300  0.00s user 0.00s system 1% cpu 0.309 total; max RSS 1876
+: exited 1
+: possiblycat 300  0.00s user 0.00s system 1% cpu 0.311 total; max RSS 1848
 
 ** Input present
 #+begin_src bsh.dash :results verbatim :exports both
-{ xxd -l 100 -p /dev/urandom ; ec --- ; ec ok } | possiblycat
+{ xxd -l 100 -p /dev/urandom ; ec --- ; ec ok } | possiblycat ; echo exited $?
 #+end_src
 
 #+RESULTS:
-: 005b3d1e4ca8b1a6505fcf9befb768eabb36b5718de90c38bc089f6a4a1a
-: 62437525491bcd030e97cfe22f14d031c6bf5433799a5479085fe92b9765
-: 97459f332bc7f0b617b3d09d6e5c6c6882d1b6ae480572c2beb3a716b3c7
-: ccc64d02cf0a1699d091
+: a5368f8cb73031bcb518371c55c998a0f308ae32d2b7606ed883696989a5
+: 77632c8a40f0264c33cb137f6149df7c03aeb4c3271539525960c4ebc3b4
+: 85dcd33879ca35e4744276cd01fbf55f4efb59e19791c9032f421a10e1f2
+: 76f9cc8632a8cd4771df
 : ---
 : ok
+: exited 0
 
 #+begin_src bsh.dash :results verbatim :exports both :wrap example
-echo | time possiblycat 1000
+echo | time possiblycat 1000 ; echo exited $?
 #+end_src
 
 #+RESULTS:
 #+begin_example
 
-possiblycat 1000  0.00s user 0.00s system 66% cpu 0.006 total; max RSS 1848
+exited 0
+possiblycat 1000  0.00s user 0.00s system 67% cpu 0.007 total; max RSS 1864
 #+end_example
