@@ -1,0 +1,61 @@
+#+TITLE: possiblycat
+
+A helper tool to optionally get the stdin if present.
+
+* Installation
+#+BEGIN_SRC
+go get -u -v github.com/NightMachinary/possiblycat
+#+END_SRC
+* Usage
+** No input on stdin
+#+begin_src bsh.dash :results verbatim :exports both
+possiblycat
+#+end_src
+
+#+RESULTS:
+
+#+begin_src bsh.dash :results verbatim :exports both
+time possiblycat
+#+end_src
+
+#+RESULTS:
+: possiblycat  0.00s user 0.00s system 28% cpu 0.020 total; max RSS 1868
+
+You can also give it the timeout time in milliseconds:
+
+#+begin_src bsh.dash :results verbatim :exports both
+time possiblycat 500
+#+end_src
+
+#+RESULTS:
+: possiblycat 500  0.00s user 0.00s system 0% cpu 0.511 total; max RSS 1868
+
+#+begin_src bsh.dash :results verbatim :exports both
+true | time possiblycat 300
+#+end_src
+
+#+RESULTS:
+: possiblycat 300  0.00s user 0.00s system 1% cpu 0.309 total; max RSS 1876
+
+** Input present
+#+begin_src bsh.dash :results verbatim :exports both
+{ xxd -l 100 -p /dev/urandom ; ec --- ; ec ok } | possiblycat
+#+end_src
+
+#+RESULTS:
+: 005b3d1e4ca8b1a6505fcf9befb768eabb36b5718de90c38bc089f6a4a1a
+: 62437525491bcd030e97cfe22f14d031c6bf5433799a5479085fe92b9765
+: 97459f332bc7f0b617b3d09d6e5c6c6882d1b6ae480572c2beb3a716b3c7
+: ccc64d02cf0a1699d091
+: ---
+: ok
+
+#+begin_src bsh.dash :results verbatim :exports both :wrap example
+echo | time possiblycat 1000
+#+end_src
+
+#+RESULTS:
+#+begin_example
+
+possiblycat 1000  0.00s user 0.00s system 66% cpu 0.006 total; max RSS 1848
+#+end_example

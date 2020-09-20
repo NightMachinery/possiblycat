@@ -12,7 +12,7 @@ import (
 
 func main() {
 	wait := 10
-	if len(os.Args) >= 1 {
+	if len(os.Args) >= 2 {
 		waitDummy, err := strconv.Atoi(os.Args[1])
 		if err != nil {
 			panic(err)
