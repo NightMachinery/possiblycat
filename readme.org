@@ -60,3 +60,26 @@ true | time possiblycat 500 ; echo exited $?
 : hi
 : exited 0
 : possiblycat 1500  0.00s user 0.00s system 0% cpu 1.005 total; max RSS 1872
+
+#+begin_src bsh.dash :results verbatim :exports both
+{ echo -n a ; sleep 0.3 ; echo $'\n'ok } | possiblycat
+#+end_src
+
+#+RESULTS:
+: a
+: ok
+
+#+begin_src bsh.dash :results verbatim :exports both
+{ sleep 0.3 ; echo $'\n'ok } | possiblycat
+#+end_src
+
+#+RESULTS:
+
+#+begin_src bsh.dash :results verbatim :exports none
+# Buggy here:
+stty cbreak ; bash -c 'echo -n a ; sleep 0.5 ; echo b' | possiblycat
+#+end_src
+
+#+RESULTS:
+: ab
+: stty: stdin isn't a terminal
